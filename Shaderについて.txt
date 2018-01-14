@@ -1,0 +1,47 @@
+
+// シェーダー名の設定
+Shader "MyShader/Test1" {
+
+	//インスペクター上に表示させる設定項目を記述
+	Properties {
+		
+		//初期値白色のテクスチャー
+		_MyTexture ("MY Texture",2D) = "white" {}
+		
+	}
+	
+	//シェーダのメインを記述
+	SubShader {
+		
+		CGPROGRAM // ここから
+		
+		struct SurfaceOutput{
+			fixed3 Albedo;	//光の向きが影響する色。物体が高原の方向を向いているほど、多くの光を反射して明るくなる
+			fixed3 Normal;	//通常の接空間
+			fixed3 Emission;//放射
+			half Specular;	//鏡面反射
+			fixed Gloss;	//鏡面反射強度
+			fixed Alpha;	//透明度のアルファ値
+		};
+		
+		struct Input{
+			float4 clolor : COLOR;
+		};
+		
+		//関数宣言
+		#pragma surface surfaceFunction Standard fullorwardshadows
+		
+		//インスペクター上に設定している項目を変数宣言
+		sampler2D _MyTexture;
+		
+		void surfaceFunction(Input IN,inout SurfaceOutput o){
+			//この中に処理を記述する
+			o.Albedo = 1;
+		}
+		
+		ENDCG	//ここまで
+		
+	}
+	Fallback "Diffuse"
+
+}
